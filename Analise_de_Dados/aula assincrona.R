@@ -17,3 +17,11 @@ df<-data.frame(vnomr1=rnorm(500, mean = 250, sd =120),
            outra=rep(c("A", "B"),times =c(170,330), 500))
 
 df$quali<-ifelse(df$vbinom==0,"zero","um")
+
+df$c_vnomr1<-df$vnomr1-mean(df$vnomr1)
+df$c_vnorm2<-df$vnorm2-mean(df$vnorm2)
+df$vpois[df$vpois==0]<-1
+df$vnbinom[df$vnbinom==0]<-1
+df$vbinom[df$vbinom==0]<-1
+
+amostra<-df[sample(nrow(df), 100), ]
