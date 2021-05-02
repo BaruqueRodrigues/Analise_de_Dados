@@ -53,12 +53,22 @@ sinistrosRecife <- read.csv2('sinistrosRecife.csv', sep = ';')
 
 install.packages("microbenchmark")
 library(microbenchmark)
+library(openxlsx)
+library(readxl)
+write.xlsx(sinistrosRecife, "sinistrosRecife.xlsx")
 
 #rodando o teste entre as duas funções
 microbenchmark(a=saveRDS(sinistrosRecifeRaw, "sinistrosRecife.rds"),
                b=write.csv2(sinistrosRecifeRaw, "sinistrosRecife.csv"),
+               c=write.xlsx(sinistrosRecife, "sinistrosRecife.xlsx"),
                times = 30L)
 #vemos que a função a tem uma média quase 5 vezes mais rápida
 microbenchmark(a=readRDS('sinistrosRecife.rds'),
                b=read.csv2('sinistrosRecife.csv', sep = ';'),
+               c=read_excel("sinistrosRecife.xlsx"),
                times = 10L)
+#vemos após executar a funão microbenchmark que o tempo de execucação de leitura da função da função
+#readRDS é 5x mais rápida que a função readxl, e 60% mais rápida que a função read.csv
+#apesar da velocidade de leitura e carregamento dessa função ser vantajosa, em termos de eficiência computacional
+#por ela trabalhar com objetos que são nativos do R é problematico. A função read.csv2 permite uma maior
+#interoperabilidade, permitindo que arquivos separados por virgula sejam lidos por qualquer software
